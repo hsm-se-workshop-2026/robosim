@@ -1,5 +1,8 @@
 # Einfacher Architekturentwurf
 
+Eine vereinfachte Erklärung des Codes und der Architektur steht in der
+[Code-Dokumentation](../documentation/code-dokumentation.md).
+
 Der Entwurf zeigt eine hexagonale Architektur als kleinen Python-Monolithen.
 Der Simulationskern kennt weder Tastatur noch Benutzeroberfläche.
 
