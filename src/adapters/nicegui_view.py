@@ -1,6 +1,7 @@
-from math import degrees
+from math import degrees, pi
 
 from nicegui import ui
+from nicegui.elements.scene.objects.polyline import Polyline
 
 from src.domain.robot import RobotState
 from src.domain.track import Point, RoundTrack
@@ -10,15 +11,42 @@ class NiceGuiViewAdapter:
     def __init__(self, track: RoundTrack) -> None:
         self._track = track
         self._points: list[str] = []
+        ui.label("2D-Ansicht mit Bewegungsverlauf")
         self._drawing = ui.html(sanitize=False)
         self._status = ui.label()
         self._distance = ui.label()
+        ui.label("3D-Ansicht: mit der Maus drehen und zoomen")
+        self._scene = ui.scene(width=600, height=350, grid=(10, 20)).classes("max-w-full")
+        with self._scene:
+            self._track_line = self._draw_track()
+            self._robot_3d = self._scene.group()
+            with self._robot_3d:
+                self._scene.cylinder(0.25, 0.25, 0.16, 32).material(
+                    "#e53935"
+                ).rotate(pi / 2, 0, 0).move(z=0.16)
+                for y in (-0.25, 0.25):
+                    self._scene.box(0.22, 0.09, 0.16).material("#333333").move(
+                        y=y, z=0.08
+                    )
+                self._scene.extrusion(
+                    [[0.04, -0.07], [0.19, 0], [0.04, 0.07]], 0.01
+                ).material("#ffffff").move(z=0.245)
+
+    def _draw_track(self) -> Polyline:
+        points = [[point.x, point.y, 0.01] for point in self._track.points]
+        points.append(points[0])
+        return self._scene.polyline(points).material("#333333")
 
     def reset(self, track: RoundTrack) -> None:
         self._track = track
         self._points.clear()
+        self._track_line.delete()
+        with self._scene:
+            self._track_line = self._draw_track()
 
     def show_robot(self, state: RobotState) -> None:
+        self._robot_3d.move(state.x, state.y, 0)
+        self._robot_3d.rotate(0, 0, state.heading)
         x = 300 + state.x * 80
         y = 150 - state.y * 80
         self._points.append(f"{x:.2f},{y:.2f}")

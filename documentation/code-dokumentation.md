@@ -6,7 +6,9 @@ RoboSim simuliert einen Roboter mit zwei einzeln angetriebenen Rädern. In der
 Web-Demo kann man ihn per Tastatur steuern oder einem Regler überlassen, der
 einem geschlossenen Rundkurs folgt. Der Kurs ist über Breite, Höhe und
 Kurvenstärke einstellbar. Die Oberfläche zeigt den Roboter, den Kurs, den
-Bewegungsverlauf und den Abstand zur Linie.
+Bewegungsverlauf und den Abstand zur Linie. Neben der 2D-Ansicht gibt es eine
+mit der Maus dreh- und zoombare 3D-Ansicht desselben Roboters und Rundkurses;
+der Bewegungsverlauf erscheint in 2D.
 
 Die Simulation ist ein Lernbeispiel, keine detaillierte physikalische
 Simulation: Der Rundkursregler kennt die Roboterposition und den Kurs direkt.
@@ -103,7 +105,7 @@ Radgeschwindigkeiten. So lenkt der Roboter entlang des Kurses.
 ## 6. Bedienung und Tests
 
 Die Start- und Installationsanleitung steht in der
-[README im Quellordner](../src/README.md). Kurzfassung vom Projektordner aus:
+[README im Projektordner](../README.md). Kurzfassung vom Projektordner aus:
 
 ```text
 python -m pip install -r requirements.txt

@@ -33,7 +33,7 @@ Konsolenadapter
 - `adapters/keyboard_control.py`: übersetzt Tasten in Radgeschwindigkeiten.
 - `adapters/line_follower.py`: Regler für den Rundkurs und für die gerade Konsolen-Demo.
 - `adapters/console_view.py`: gibt den Zustand aus.
-- `adapters/nicegui_view.py`: zeigt Roboter, Linie und Bewegungsverlauf im Browser.
+- `adapters/nicegui_view.py`: zeigt Roboter und Linie in 2D und 3D sowie den Bewegungsverlauf in 2D.
 - `main.py`: verbindet die Bausteine und startet ein kleines Beispiel.
 - `web_demo.py`: verbindet die Bausteine für die grafische Linienfolger-Demo.
 
@@ -67,6 +67,9 @@ python -m src.web_demo
 Im Browser `http://127.0.0.1:8093` öffnen und **Start / Fortsetzen** wählen.
 Der rote Kreis stellt den Roboterkörper dar, die dunklen Rechtecke die beiden
 Räder und der weiße Pfeil die Fahrtrichtung.
+Zusätzlich zeigt eine 3D-Ansicht denselben Roboter und Rundkurs; ihre Perspektive
+lässt sich mit der Maus drehen und zoomen. Der blaue Bewegungsverlauf wird in
+der 2D-Ansicht angezeigt.
 Der Rundkurs kann beliebig lange gefahren und pausiert werden. Mit den Reglern
 lassen sich Breite, Höhe und Kurvenstärke einstellen; **Kurs übernehmen /
 Zurücksetzen** übernimmt die Werte und setzt Roboter und Bewegungsverlauf zurück.
