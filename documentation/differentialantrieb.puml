@@ -1,0 +1,28 @@
+@startuml
+title Differentialantrieb – Radgeschwindigkeit bestimmt die Bewegung
+left to right direction
+
+skinparam backgroundColor #F7F9FC
+skinparam shadowing false
+skinparam roundcorner 18
+skinparam defaultFontName Segoe UI
+skinparam defaultFontSize 15
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.5
+skinparam rectangle {
+  BorderColor #CBD5E1
+  FontColor #172033
+}
+
+rectangle "<b>Geradeaus</b>\n\nvL = vR\nBeide Räder gleich schnell" as straight #E8F7F1
+rectangle "<b>Kurvenfahrt</b>\n\nvL ≠ vR\nRäder unterschiedlich schnell" as curve #EAF1FF
+rectangle "<b>Drehung auf der Stelle</b>\n\nvL = −vR\nRäder entgegengesetzt" as turn #FFF4DB
+
+straight -[hidden]-> curve
+curve -[hidden]-> turn
+
+note bottom
+  Vorwärtsgeschwindigkeit: v = (vL + vR) / 2
+  Drehgeschwindigkeit:     ω = (vR − vL) / Radabstand
+end note
+@enduml

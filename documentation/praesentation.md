@@ -35,62 +35,38 @@ Ein Lernprojekt für Software Engineering und Regelungstechnik
 
 # Live-Demo
 
-1. Im Projektordner starten:
+**Lokal mit NiceGUI**
 
-   ```text
-   python -m src.web_demo
-   ```
+```text
+python -m src.web_demo
+```
 
-2. `http://127.0.0.1:8093` im Browser öffnen.
-3. **Start / Fortsetzen** wählen und den Linienfolger beobachten.
-4. Zu **Manuell** wechseln und mit W/A/S/D fahren.
-5. Kursparameter ändern und **Kurs übernehmen / Zurücksetzen** wählen.
+Danach `http://127.0.0.1:8093` öffnen.
+
+**Auf GitHub Pages:** statische 2D-Oberfläche mit Pyodide; der Python-Kern
+läuft direkt im Browser. Beide Varianten bieten Regler, manuelle Steuerung
+und einstellbare Kursparameter.
 
 ---
 
 # Wie bewegt sich der Roboter?
 
-Der Roboter hat einen **Differentialantrieb**:
+Der Roboter hat einen **Differentialantrieb**. Aus den Geschwindigkeiten
+der beiden Antriebsräder entstehen Vorwärts- und Drehbewegung.
 
-| Radgeschwindigkeiten | Bewegung |
-|---|---|
-| Beide Räder gleich schnell | Geradeaus |
-| Räder unterschiedlich schnell | Kurvenfahrt |
-| Räder entgegengesetzt | Drehung auf der Stelle |
+![Drei Bewegungsarten des Differentialantriebs](./differentialantrieb.svg)
 
-Die Simulation berechnet Position und Ausrichtung in kleinen Zeitschritten.
-
-```text
-                 Fahrtrichtung
-                      ^
-          +-----------------------+
-          |      ROBOTER          |
-          |  [linkes]   [rechtes] |  <- Antriebsraeder
-          +-----------------------+
-                Radabstand
-```
+Der Radabstand bestimmt, wie stark unterschiedliche Radgeschwindigkeiten den
+Roboter drehen.
 
 ---
 
 # Wie folgt der Regler dem Kurs?
 
-1. Den nächstgelegenen Punkt auf dem Kurs suchen.
-2. Einen Zielpunkt ein Stück **vor** diesem Punkt bestimmen.
-3. Die Richtung zum Ziel mit der aktuellen Ausrichtung vergleichen.
-4. Daraus Geschwindigkeiten für linkes und rechtes Rad berechnen.
+Der Regler schaut **0,4 m voraus**, vergleicht Zielrichtung und
+Roboterausrichtung und leitet daraus die Radgeschwindigkeiten ab.
 
-```text
-+----------------------+    +----------------------+    +----------------------+
-| Roboterposition      | -> | Punkt am Kurs        | -> | Ziel voraus          |
-+----------------------+    +----------------------+    +----------------------+
-                                                           |
-                                                           v
-+----------------------+    +----------------------+    +----------------------+
-| Raeder ansteuern     | <- | Richtung abgleichen  | <- | Ist-Ausrichtung      |
-+----------------------+    +----------------------+    +----------------------+
-       ^                                                   |
-       +---------------- naechster Zeitschritt <-----------+
-```
+![Ablauf des Rundkursreglers](./ablauf-regler.svg)
 
 Der Rundkursregler verwendet die simulierte Position und den bekannten Kurs;
 **Liniensensoren werden bisher nicht simuliert**.
@@ -99,40 +75,22 @@ Der Rundkursregler verwendet die simulierte Position und den bekannten Kurs;
 
 # Der Rundkurs
 
-- Geschlossene, parametrische Kurve mit mehreren Wölbungen
-- **Breite** und **Höhe** skalieren die Form
-- **Kurvenstärke** verändert die Wölbungen
-- Eine Linie aus 360 verbundenen Punkten nähert den Kurs an
+- **Breite** und **Höhe** skalieren die geschlossene Kurve; die
+  **Kurvenstärke** verändert ihre Wölbungen.
+- Dieselben 360 verbundenen Punkte werden für Anzeige, Abstandsmessung und
+  Regelung verwendet.
 
-Dieselbe Kursnäherung dient der Darstellung, Abstandsmessung und Regelung.
-
-```text
-                    .---->----.
-                 .-'           '-.
-               .'                 '.
-              /                     \
-             |                       |
-              \                     /
-               '.                 .'
-                 '-.___________.-'
-
-             geschlossener Rundkurs
-```
+![Berechnung und Verwendung der Kursnäherung](./rundkurs.svg)
 
 ---
 
 # Architektur: getrennte Aufgaben
 
-Die Anwendung orientiert sich an einer **hexagonalen Architektur**:
+![Browseroberfläche, Pyodide und Simulationskern](./architektur.svg)
 
-```text
-Tastatur → Adapter → Simulation → Robotermodell
-                         ├──────→ Regler → Rundkurs
-                         └──────→ Anzeige → Browser
-```
-
-**Ports** beschreiben Schnittstellen; **Adapter** verbinden die Simulation
-mit Tastatur, Regler und Anzeige. Der Simulationskern benötigt kein NiceGUI.
+Auf GitHub Pages läuft der wiederverwendbare Python-Kern mit Pyodide direkt im
+Browser. Die lokale NiceGUI-Variante verwendet denselben Kern; dort gibt es
+zusätzlich eine 3D-Ansicht.
 
 ---
 
@@ -144,7 +102,7 @@ mit Tastatur, Regler und Anzeige. Der Simulationskern benötigt kein NiceGUI.
   vergleichen und Vergleichskennzahlen ergänzen.
 
 Weitere Details: [Code-Dokumentation](./code-dokumentation.md) ·
-[Architekturdiagramm](./architektur.puml)
+[Architekturdiagramm](./architektur.svg)
 
 ---
 

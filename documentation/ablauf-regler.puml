@@ -1,0 +1,27 @@
+@startuml
+title So folgt der Regler dem Rundkurs
+
+skinparam backgroundColor #F7F9FC
+skinparam shadowing false
+skinparam roundcorner 18
+skinparam defaultFontName Segoe UI
+skinparam defaultFontSize 15
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.5
+skinparam activity {
+  BackgroundColor #EAF1FF
+  BorderColor #9CB5E8
+  FontColor #172033
+  DiamondBackgroundColor #FFF4DB
+  DiamondBorderColor #E7C77B
+  StartColor #315ED1
+  EndColor #315ED1
+}
+
+(*) -right-> "Roboterzustand lesen"
+-right-> "Nächsten Kurspunkt\nund Ziel 0,4 m voraus finden"
+-right-> "Richtungsfehler berechnen\nund Lenkung begrenzen"
+-right-> "Linkes und rechtes Rad\n0,05 s ansteuern"
+-right-> "Neuen Zustand\nund Abstand anzeigen"
+-right-> (*)
+@enduml

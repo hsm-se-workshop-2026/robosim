@@ -1,0 +1,30 @@
+@startuml
+title Ein Rundkurs – eine Berechnung, drei Anwendungen
+left to right direction
+
+skinparam backgroundColor #F7F9FC
+skinparam shadowing false
+skinparam roundcorner 18
+skinparam defaultFontName Segoe UI
+skinparam defaultFontSize 15
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.5
+skinparam rectangle {
+  BorderColor #CBD5E1
+  FontColor #172033
+}
+
+rectangle "<b>Kursparameter</b>\n\nBreite · Höhe\nKurvenstärke k" as params #FFF4DB
+rectangle "<b>Formel</b>\n\nr(t) = 1 + k · cos(3t)\nx(t) = Breite · r(t) · cos(t)\ny(t) = Höhe · r(t) · sin(t)" as formula #EAF1FF
+rectangle "<b>360 Punkte</b>\n\nZu einer geschlossenen\nLinie verbunden" as points #F1EAFE
+
+rectangle "<b>Anzeige</b>\n\nKurs im Browser\nzeichnen" as draw #E8F7F1
+rectangle "<b>Abstand</b>\n\nKürzesten Abstand\nzur Linie messen" as distance #E8F7F1
+rectangle "<b>Regler</b>\n\nNächsten Punkt und\nZiel voraus finden" as control #E8F7F1
+
+params --> formula
+formula --> points
+points --> draw
+points --> distance
+points --> control
+@enduml

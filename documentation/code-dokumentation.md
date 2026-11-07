@@ -30,10 +30,11 @@ Tastatur ──> Tastaturadapter ──> Simulationsservice ──> Robotermodel
 ```
 
 Die Pfeile zeigen hier vereinfacht, wer wen aufruft. Die Weboberfläche verbindet
-die Bausteine und startet die Simulationsschritte. Das [vereinfachte
-PlantUML-Klassendiagramm](./architektur.puml) liegt daneben. Es kann mit einer
-PlantUML-Vorschau geöffnet werden; die Textübersicht oben funktioniert auch
-ohne Zusatzprogramm.
+die Bausteine und startet die Simulationsschritte. Das [Laufzeitdiagramm](./architektur.svg)
+zeigt die Browser-Version mit Pyodide; die lokale NiceGUI-Anwendung verwendet
+denselben Simulationskern.
+
+![RoboSim: Browseroberfläche, Pyodide und Simulationskern](./architektur.svg)
 
 ### Die wichtigsten Dateien
 
@@ -102,6 +103,9 @@ Linie und einen Zielpunkt etwas weiter in Fahrtrichtung. Er vergleicht die
 Richtung zum Ziel mit der aktuellen Ausrichtung und berechnet daraus die
 Radgeschwindigkeiten. So lenkt der Roboter entlang des Kurses.
 
+![Reglerablauf auf dem Rundkurs](./ablauf-regler.svg)
+![Berechnung und Verwendung der Kursnäherung](./rundkurs.svg)
+
 ## 6. Bedienung und Tests
 
 Die Start- und Installationsanleitung steht in der
@@ -150,3 +154,27 @@ Der Workflow veröffentlicht bei Pushes auf den Branch `pyodide`. Die
 veröffentlichte Website benötigt beim ersten Aufruf Netzwerkzugriff auf das
 Pyodide-CDN. Pages muss in den Repository-Einstellungen als Deployment-Quelle
 **GitHub Actions** verwenden.
+
+## 8. Grafiken für die Präsentation
+
+Die PlantUML-Quellen und die gerenderten SVGs liegen in `documentation/`:
+
+| Quelle | Grafik | Inhalt |
+|---|---|---|
+| [differentialantrieb.puml](./differentialantrieb.puml) | [differentialantrieb.svg](./differentialantrieb.svg) | Zusammenhang von Radgeschwindigkeiten und Bewegung |
+| [rundkurs.puml](./rundkurs.puml) | [rundkurs.svg](./rundkurs.svg) | Kursformel und ihre Verwendung |
+| [ablauf-regler.puml](./ablauf-regler.puml) | [ablauf-regler.svg](./ablauf-regler.svg) | Schritte des Rundkursreglers |
+| [architektur.puml](./architektur.puml) | [architektur.svg](./architektur.svg) | Browser, Pyodide und Simulationskern |
+
+Die Grafiken lassen sich vom Projektordner aus mit
+[`render_diagram.bat`](../scripts/render_diagram.bat) neu erzeugen:
+
+```bat
+scripts\render_diagram.bat documentation\differentialantrieb.puml
+scripts\render_diagram.bat documentation\rundkurs.puml
+scripts\render_diagram.bat documentation\ablauf-regler.puml
+scripts\render_diagram.bat documentation\architektur.puml
+```
+
+Das Skript überträgt die Diagrammquellen an die öffentliche Kroki-API; sende
+keine vertraulichen Inhalte.
