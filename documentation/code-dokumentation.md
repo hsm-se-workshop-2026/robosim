@@ -30,10 +30,10 @@ Tastatur ──> Tastaturadapter ──> Simulationsservice ──> Robotermodel
 ```
 
 Die Pfeile zeigen hier vereinfacht, wer wen aufruft. Die Weboberfläche verbindet
-die Bausteine und startet die Simulationsschritte. Ein ausführlicheres
-[PlantUML-Komponentendiagramm](./architektur.puml) liegt daneben. Es kann mit
-einer PlantUML-Vorschau geöffnet werden; die Textübersicht oben funktioniert
-auch ohne Zusatzprogramm.
+die Bausteine und startet die Simulationsschritte. Das [vereinfachte
+PlantUML-Klassendiagramm](./architektur.puml) liegt daneben. Es kann mit einer
+PlantUML-Vorschau geöffnet werden; die Textübersicht oben funktioniert auch
+ohne Zusatzprogramm.
 
 ### Die wichtigsten Dateien
 

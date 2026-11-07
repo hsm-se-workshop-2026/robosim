@@ -1,24 +1,81 @@
 @startuml
+title RoboSim – vereinfachtes Klassendiagramm
 left to right direction
-skinparam componentStyle rectangle
+skinparam classAttributeIconSize 0
 
-actor "Nutzer" as user
-component "Weboberfläche\nweb_demo.py" as web
-component "Tastaturadapter" as keyboard
-component "Simulationsservice" as simulation
-component "Rundkursregler" as controller
-component "Robotermodell" as robot
-component "Rundkurs" as track
-component "NiceGUI-Anzeige" as view
+package "Domain" {
+  class DifferentialDriveRobot {
+    +wheel_base: float
+    +move(left_speed, right_speed, time_step): RobotState
+  }
+  class RobotState {
+    +x: float
+    +y: float
+    +heading: float
+  }
+  class WheelSpeeds {
+    +left: float
+    +right: float
+  }
+  class RoundTrack {
+    +point(parameter): Point
+    +nearest(position): Point
+    +ahead(start, segment, distance): Point
+  }
+  class Point {
+    +x: float
+    +y: float
+  }
+}
 
-user --> web : bedient
-web --> keyboard : Tasteneingabe
-web --> simulation : Start, Schritt,\nReglerauswahl
-keyboard --> simulation : Radgeschwindigkeiten\nüber SimulationInputPort
-simulation --> controller : fragt Radgeschwindigkeiten\nüber ControllerPort ab
-controller --> track : nächster Punkt\nund Zielpunkt
-simulation --> robot : bewegt Roboter
-simulation --> view : neuer Zustand\nüber RobotViewPort
-view --> track : Kurs und Abstand
-view --> web : Darstellung
+package "Application" {
+  interface SimulationInputPort {
+    +set_wheel_speeds(left_speed, right_speed)
+    +step(time_step): RobotState
+  }
+  interface ControllerPort {
+    +calculate(state): WheelSpeeds
+  }
+  interface RobotViewPort {
+    +show_robot(state)
+  }
+  class SimulationService {
+    +set_controller(controller)
+    +step(time_step): RobotState
+  }
+}
+
+package "Adapter" {
+  class KeyboardControlAdapter {
+    +press(key)
+    +release()
+    +update(time_step)
+  }
+  class RoundTrackFollowerController {
+    +calculate(state): WheelSpeeds
+  }
+  class NiceGuiViewAdapter {
+    +reset(track)
+    +show_robot(state)
+  }
+}
+
+SimulationService ..|> SimulationInputPort
+RoundTrackFollowerController ..|> ControllerPort
+NiceGuiViewAdapter ..|> RobotViewPort
+
+SimulationService --> DifferentialDriveRobot : bewegt
+SimulationService --> ControllerPort : nutzt optional
+SimulationService --> RobotViewPort : aktualisiert
+KeyboardControlAdapter --> SimulationInputPort : steuert
+RoundTrackFollowerController --> RoundTrack : folgt
+RoundTrackFollowerController ..> RobotState : liest
+RoundTrackFollowerController ..> WheelSpeeds : liefert
+DifferentialDriveRobot --> RobotState : verwaltet
+DifferentialDriveRobot ..> WheelSpeeds : Radgeschwindigkeiten
+RobotViewPort ..> RobotState : zeigt
+NiceGuiViewAdapter --> RoundTrack : zeichnet
+RoundTrack "1" *-- "360" Point : besteht aus
+RoundTrack ..> Point : berechnet
+
 @enduml
