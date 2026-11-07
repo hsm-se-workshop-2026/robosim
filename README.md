@@ -115,6 +115,9 @@ Die Tests verwenden die eingebaute `unittest`-Bibliothek von Python:
 python -m unittest discover -s tests
 ```
 
+GitHub Actions führt bei jedem Push und Pull Request automatisch eine
+Syntaxprüfung und diese Tests aus.
+
 Die NiceGUI-Oberfläche und die Konsolenausgabe nutzen denselben Simulationskern.
 Ein Regler implementiert `ControllerPort`: Er liest den Roboterzustand und liefert
 Radgeschwindigkeiten zurück. Die Simulation kann mit `set_controller(...)`
