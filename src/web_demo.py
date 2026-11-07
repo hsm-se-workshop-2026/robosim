@@ -1,3 +1,4 @@
+import os
 from math import pi
 
 from nicegui import events, ui
@@ -125,7 +126,12 @@ def page() -> None:
 
 
 def main() -> None:
-    ui.run(title="RoboSim: Linienfolger", host="127.0.0.1", port=8093, reload=False)
+    ui.run(
+        title="RoboSim: Linienfolger",
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", "8093")),
+        reload=False,
+    )
 
 
 if __name__ == "__main__":

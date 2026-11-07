@@ -90,6 +90,23 @@ keine Gesamtabmessungen. Zeichnung, Abstandsmessung und Regler verwenden
 dieselbe Näherung aus 360 verbundenen Punkten. Der Bewegungsverlauf zeigt die
 letzten 2000 Zustände.
 
+## Online bereitstellen
+
+GitHub speichert den Quellcode, hostet aber mit GitHub Pages keine dauerhaft
+laufende Python-/NiceGUI-App. Zum Beispiel lässt sich das Repository mit Render
+als Web Service verbinden:
+
+1. Den Code zu GitHub pushen und in Render **New > Web Service** auswählen.
+2. Das GitHub-Repository verbinden. Falls das Projekt in einem Unterordner liegt,
+   diesen als **Root Directory** angeben (der Ordner mit `requirements.txt`).
+3. Als **Build Command** `pip install -r requirements.txt` und als **Start
+   Command** `python -m src.web_demo` eintragen.
+4. Den Web Service erstellen. Render stellt eine öffentliche URL bereit und
+   kann neue Commits anschließend automatisch deployen.
+
+Die App bindet sich für das Hosting an `0.0.0.0` und liest den Port aus der
+Umgebungsvariable `PORT`. Lokal verwendet sie weiterhin Port `8093`.
+
 ## Tests ausführen
 
 Die Tests verwenden die eingebaute `unittest`-Bibliothek von Python:
