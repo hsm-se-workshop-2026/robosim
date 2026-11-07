@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <meta name="description" content="RoboSim: einen Roboter im Browser simulieren und steuern.">
+    <title>RoboSim – Roboter im Browser</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.29.3/full/pyodide.js"></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <main class="page">
+      <header class="intro">
+        <p class="eyebrow">Python-Simulation im Browser</p>
+        <h1>RoboSim</h1>
+        <p>Steuere den Differentialantrieb selbst oder lass ihn dem Rundkurs folgen.</p>
+      </header>
+
+      <section class="panel controls" aria-labelledby="controls-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Einstellungen</p>
+            <h2 id="controls-title">Kurs und Steuerung</h2>
+          </div>
+          <span id="runtime-status" class="runtime-status" role="status">Pyodide wird geladen …</span>
+        </div>
+
+        <div class="sliders">
+          <label>
+            <span>Breite <output id="width-value">1.9</output></span>
+            <input id="width" type="range" min="1.5" max="2.2" step="0.1" value="1.9">
+          </label>
+          <label>
+            <span>Höhe <output id="height-value">1.1</output></span>
+            <input id="height" type="range" min="0.8" max="1.3" step="0.1" value="1.1">
+          </label>
+          <label>
+            <span>Kurvenstärke <output id="curves-value">0.12</output></span>
+            <input id="curves" type="range" min="0.05" max="0.2" step="0.01" value="0.12">
+          </label>
+        </div>
+
+        <div class="button-row">
+          <button id="apply-track" class="button secondary" type="button" disabled>Kurs übernehmen / Zurücksetzen</button>
+        </div>
+
+        <div class="control-footer">
+          <div class="button-row" aria-label="Steuerungsmodus">
+            <button id="manual-mode" class="button secondary" type="button" disabled>Manuell</button>
+            <button id="controller-mode" class="button secondary selected" type="button" disabled>Linienfolger</button>
+          </div>
+          <div class="button-row">
+            <button id="start" class="button primary" type="button" disabled>Start / Fortsetzen</button>
+            <button id="pause" class="button secondary" type="button" disabled>Pause</button>
+          </div>
+        </div>
+        <p id="run-status" class="run-status">Simulation ist bereit.</p>
+        <p id="error-message" class="error-message" role="alert" hidden></p>
+      </section>
+
+      <section class="panel simulation" aria-labelledby="simulation-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Live-Ansicht</p>
+            <h2 id="simulation-title">Roboter auf dem Rundkurs</h2>
+          </div>
+          <span class="legend"><span class="legend-dot"></span>Roboter</span>
+        </div>
+        <svg id="scene" viewBox="0 0 600 300" role="img" aria-label="2D-Ansicht des Roboters auf dem Rundkurs">
+          <polygon id="track" class="track"></polygon>
+          <polyline id="trail" class="trail"></polyline>
+          <g id="robot">
+            <circle class="robot-body" cx="0" cy="0" r="20"></circle>
+            <rect class="robot-wheel" x="-9" y="-24" width="18" height="8" rx="2"></rect>
+            <rect class="robot-wheel" x="-9" y="16" width="18" height="8" rx="2"></rect>
+            <path class="robot-direction" d="M 4 -5 L 14 0 L 4 5 Z"></path>
+          </g>
+        </svg>
+        <div class="readouts" aria-live="polite">
+          <span id="position">x = —, y = —</span>
+          <span id="heading">Winkel = — rad</span>
+          <span id="distance">Abstand zur Linie: —</span>
+        </div>
+        <p class="hint">Im manuellen Modus: W vorwärts, S rückwärts, A links, D rechts. Beim Loslassen hält der Roboter an.</p>
+      </section>
+      <footer>Die Simulation läuft mit Python im Browser (Pyodide); der Simulationsserver ist nicht erforderlich.</footer>
+    </main>
+  </body>
+</html>

@@ -92,9 +92,8 @@ letzten 2000 Zustände.
 
 ## Online bereitstellen
 
-GitHub speichert den Quellcode, hostet aber mit GitHub Pages keine dauerhaft
-laufende Python-/NiceGUI-App. Zum Beispiel lässt sich das Repository mit Render
-als Web Service verbinden:
+Die NiceGUI-Web-Demo benötigt einen Python-Webserver. Zum Beispiel lässt sich
+das Repository mit Render als Web Service verbinden:
 
 1. Den Code zu GitHub pushen und in Render **New > Web Service** auswählen.
 2. Das GitHub-Repository verbinden. Falls das Projekt in einem Unterordner liegt,
@@ -106,6 +105,30 @@ als Web Service verbinden:
 
 Die App bindet sich für das Hosting an `0.0.0.0` und liest den Port aus der
 Umgebungsvariable `PORT`. Lokal verwendet sie weiterhin Port `8093`.
+
+## Statische Browser-Version auf GitHub Pages
+
+Eine separate 2D-Version läuft als statische Website auf GitHub Pages. Sie
+verwendet Pyodide, um den vorhandenen Python-Simulationskern direkt im Browser
+auszuführen; ein Python-Webserver und NiceGUI sind dafür nicht erforderlich.
+Die Oberfläche ist neu in HTML, CSS und JavaScript umgesetzt. Die 3D-Ansicht
+ist in dieser Pages-Version nicht enthalten.
+
+Zum lokalen Erstellen und Testen vom Projektordner aus:
+
+```text
+python scripts/build_pages.py
+python -m http.server 8000 --directory build/pages
+```
+
+Danach `http://127.0.0.1:8000` öffnen. Das erste Laden benötigt eine
+Internetverbindung, um Pyodide vom CDN zu laden.
+
+Für die Veröffentlichung den Branch `pyodide` zu GitHub pushen und in
+**Settings > Pages > Build and deployment** als Quelle **GitHub Actions**
+auswählen. Der Workflow `.github/workflows/pages.yml` baut und veröffentlicht
+die statische Website; die Projektseite ist anschließend unter
+`https://<owner>.github.io/<repository>/` erreichbar.
 
 ## Tests ausführen
 

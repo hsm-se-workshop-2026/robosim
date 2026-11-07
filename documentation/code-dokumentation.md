@@ -123,3 +123,30 @@ Reglerwechsel, Rundkurs und Darstellung:
 ```text
 python -m unittest discover -s tests
 ```
+
+## 7. Statische Browser-Version mit Pyodide
+
+Die Pages-Version liegt in `site/`. Ihre HTML-/CSS-/JavaScript-Oberfläche ruft
+die Python-Schnittstelle in [browser_api.py](../src/browser_api.py) auf. Der
+Build-Helfer [build_pages.py](../scripts/build_pages.py) kopiert die benötigten
+Python-Module unverändert in das statische Ausgabe-Verzeichnis. Pyodide lädt
+diese Dateien in seine Browser-Laufzeit; `browser_api.py` verbindet sie mit
+dem Simulationsservice und liefert Zustand sowie Kurs als JSON zurück.
+
+Die Oberfläche zeichnet den Kurs, Roboter und Bewegungsverlauf als SVG. Die
+NiceGUI-Ansicht und ihre 3D-Szene werden nicht verwendet. Die lokale NiceGUI-App
+bleibt separat unter `python -m src.web_demo` verfügbar.
+
+Der GitHub-Actions-Workflow erzeugt beim Deployment ein statisches Site-Artefakt
+aus `site/` und den Python-Modulen. Lokal lässt es sich mit diesen Befehlen
+erzeugen und testen:
+
+```text
+python scripts/build_pages.py
+python -m http.server 8000 --directory build/pages
+```
+
+Der Workflow veröffentlicht bei Pushes auf den Branch `pyodide`. Die
+veröffentlichte Website benötigt beim ersten Aufruf Netzwerkzugriff auf das
+Pyodide-CDN. Pages muss in den Repository-Einstellungen als Deployment-Quelle
+**GitHub Actions** verwenden.
